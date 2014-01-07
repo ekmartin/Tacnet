@@ -620,7 +620,6 @@ function setBackground(background, clicked, init) {
         var oldLineJoin = sketchContext.lineJoin;
         var oldLineCap = sketchContext.lineCap;
         var oldStrokeStyle = sketchContext.strokeStyle;
-
         var width = 1140;
         var height = Math.round(bgimg.height / (bgimg.width / width));
 
