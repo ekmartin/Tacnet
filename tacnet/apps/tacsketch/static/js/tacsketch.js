@@ -621,12 +621,15 @@ function setBackground(background, clicked, init) {
         var oldLineCap = sketchContext.lineCap;
         var oldStrokeStyle = sketchContext.strokeStyle;
 
-        bgCanvas.width = bgimg.width;
-        bgCanvas.height = bgimg.height;
-        sketchCanvas.width = bgimg.width;
-        sketchCanvas.height = bgimg.height;
-        fabricCanvas.setWidth(bgimg.width);
-        fabricCanvas.setHeight(bgimg.height);
+        var width = 1140;
+        var height = Math.round(bgimg.height / (bgimg.width / width));
+
+        bgCanvas.width = width;
+        bgCanvas.height = height;
+        sketchCanvas.width = width;
+        sketchCanvas.height = height;
+        fabricCanvas.setWidth(width);
+        fabricCanvas.setHeight(height);
         bgContext.drawImage(bgimg,0,0);
 
         sketchContext.lineWidth =  oldLineWidth;
