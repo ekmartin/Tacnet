@@ -678,6 +678,32 @@ function resetFabric(clicked) {
     icons = {};
 }
 
+var loadMap = document.getElementById('loadMap');
+loadMap.addEventListener('change', handleMaps);
+
+function handleMaps(e) {
+    var img = new Image;
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.onload = function() {
+        if (img.width > 1140) {
+            var width = 1140;
+            var height = Math.round(img.height / (img.width / width));
+            bgCanvas.style.width = width;
+            bgCanvas.style.height = height;
+            sketchCanvas.width = width;
+            sketchCanvas.height = height;
+        }
+        sketchContext.drawImage(img, 0,0, width, height);
+        img = sketchCanvas.toDataURL('image/png');
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: 'load',
+                loadobject: img
+            });
+        }
+    }
+}
+
 var input = document.getElementById('input');
 input.addEventListener('change', handleFiles);
 

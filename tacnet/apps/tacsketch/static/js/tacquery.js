@@ -264,6 +264,10 @@ $(document).ready(function () {
         });
     });
 
+    $('.loadMapFromPath').click(function() {
+        $('#loadMap').click();
+    });
+
     $('.loadDrawings').click(function() {
         $('#input').click();
     });
