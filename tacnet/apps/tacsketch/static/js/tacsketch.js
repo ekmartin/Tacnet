@@ -620,9 +620,14 @@ function setBackground(background, clicked, init) {
         var oldLineJoin = sketchContext.lineJoin;
         var oldLineCap = sketchContext.lineCap;
         var oldStrokeStyle = sketchContext.strokeStyle;
-        var width = 1140;
-        var height = Math.round(bgimg.height / (bgimg.width / width));
-
+        if (bgimg.width > 1140) {
+            var width = 1140;
+            var height = Math.round(bgimg.height / (bgimg.width / width));
+        }
+        else {
+            var width = bgimg.width;
+            var height = bgimg.height;
+        }
         bgCanvas.width = width;
         bgCanvas.height = height;
         sketchCanvas.width = width;
@@ -682,26 +687,7 @@ var loadMap = document.getElementById('loadMap');
 loadMap.addEventListener('change', handleMaps);
 
 function handleMaps(e) {
-    var img = new Image;
-    img.src = URL.createObjectURL(e.target.files[0]);
-    img.onload = function() {
-        if (img.width > 1140) {
-            var width = 1140;
-            var height = Math.round(img.height / (img.width / width));
-            bgCanvas.style.width = width;
-            bgCanvas.style.height = height;
-            sketchCanvas.width = width;
-            sketchCanvas.height = height;
-        }
-        sketchContext.drawImage(img, 0, 0, width, height);
-        img = sketchCanvas.toDataURL('image/png');
-        if (TogetherJS.running) {
-            TogetherJS.send({
-                type: 'load',
-                loadobject: img
-            });
-        }
-    }
+    setBackground(URL.createObjectURL(e.target.files[0]));  
 }
 
 var input = document.getElementById('input');
