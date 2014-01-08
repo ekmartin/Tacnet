@@ -24,7 +24,9 @@ TogetherJS.hub.on('setBackground', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    setBackground(msg.background, false, false);
+    scaleBackground = msg.scaleBackground;
+    console.log("setting background", msg.background);
+    setBackground(msg.background, msg.backgroundID, false, false, false);
 });
 
 TogetherJS.hub.on('load', function (msg) {
@@ -192,7 +194,7 @@ TogetherJS.hub.on('movedObject', function (msg) {
         return;
     }
     var sendObject = msg.sendObject;
-    icons[sendObject.hash]['left'] = sendObject['left']
+    icons[sendObject.hash]['left'] = sendObject['left']
     icons[sendObject.hash]['top'] = sendObject['top']
     icons[sendObject.hash]['oCoors'] = sendObject['oCoords']
     fabricCanvas.renderAll();
@@ -213,7 +215,7 @@ TogetherJS.hub.on('scaledObject', function (msg) {
         return;
     }
     var sendObject = msg.sendObject;
-    icons[sendObject.hash]['scaleX'] = sendObject['scaleX']
+    icons[sendObject.hash]['scaleX'] = sendObject['scaleX']
     icons[sendObject.hash]['scaleY'] = sendObject['scaleY']
     icons[sendObject.hash]['width'] = sendObject['width']
     icons[sendObject.hash]['height'] = sendObject['height']
@@ -229,7 +231,7 @@ TogetherJS.hub.on('rotatedObject', function (msg) {
         return;
     }
     var sendObject = msg.sendObject;
-    icons[sendObject.hash]['angle'] = sendObject['angle']
+    icons[sendObject.hash]['angle'] = sendObject['angle']
     fabricCanvas.renderAll();
     icons[sendObject.hash].setCoords();
 });
@@ -258,7 +260,9 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         lines: lineArr,
         fabric: fabricJSON,
         undoArray: undoArray,
-        background: currentBackground
+        background: currentBackground,
+        backgroundID: currentBackgroundID,
+        scaleBackground: scaleBackground
     });
 });
 
@@ -272,5 +276,6 @@ TogetherJS.hub.on('init', function (msg) {
         lines[linesArr[i][5]] = linesArr[i];
     }
     initJSON = msg.fabric;
-    setBackground(msg.background, false, true);
+    scaleBackground = msg.scaleBackground;
+    setBackground(msg.background, msg.backgroundID, false, true, false);
 });
