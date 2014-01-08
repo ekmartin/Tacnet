@@ -620,6 +620,37 @@ function setBackground(background, clicked, init) {
         var oldLineJoin = sketchContext.lineJoin;
         var oldLineCap = sketchContext.lineCap;
         var oldStrokeStyle = sketchContext.strokeStyle;
+
+        bgCanvas.width = bgimg.width;
+        bgCanvas.height = bgimg.height;
+        sketchCanvas.width = bgimg.width;
+        sketchCanvas.height = bgimg.height;
+        fabricCanvas.setWidth(bgimg.width);
+        fabricCanvas.setHeight(bgimg.height);
+        bgContext.drawImage(bgimg,0,0);
+
+        sketchContext.lineWidth =  oldLineWidth;
+        sketchContext.lineJoin = oldLineJoin;
+        sketchContext.lineCap = oldLineCap;
+        sketchContext.strokeStyle = oldStrokeStyle;
+        if (init) {
+            initDraw();
+        }
+        else {
+            lines = {};
+        }
+    }
+}
+
+function setLoadBackground(background, clicked, init) {
+    currentBackground = background;
+    var bgimg = new Image();
+    bgimg.src = background;
+    bgimg.onload = function() {
+        var oldLineWidth = sketchContext.lineWidth;
+        var oldLineJoin = sketchContext.lineJoin;
+        var oldLineCap = sketchContext.lineCap;
+        var oldStrokeStyle = sketchContext.strokeStyle;
         if (bgimg.width > 1140) {
             var width = 1140;
             var height = Math.round(bgimg.height / (bgimg.width / width));
@@ -635,7 +666,15 @@ function setBackground(background, clicked, init) {
         fabricCanvas.setWidth(width);
         fabricCanvas.setHeight(height);
         bgContext.drawImage(bgimg, 0, 0, width, height);
-
+        var sendImage = bgCanvas.toDataURL('image/png');
+        if (clicked) {
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: 'setBackground',
+                    background: sendImage
+                });
+            }
+        }
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
@@ -648,6 +687,7 @@ function setBackground(background, clicked, init) {
         }
     }
 }
+
 
 // Reset background
 function resetBackground(clicked) {
@@ -687,8 +727,9 @@ var loadMap = document.getElementById('loadMap');
 loadMap.addEventListener('change', handleMaps);
 
 function handleMaps(e) {
-    setBackground(URL.createObjectURL(e.target.files[0]));  
+    setLoadBackground(URL.createObjectURL(e.target.files[0]), true, false);
 }
+
 
 var input = document.getElementById('input');
 input.addEventListener('change', handleFiles);
