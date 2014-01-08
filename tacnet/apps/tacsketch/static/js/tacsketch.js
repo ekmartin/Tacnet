@@ -629,7 +629,7 @@ function setBackground(background, clicked, init) {
         sketchCanvas.height = height;
         fabricCanvas.setWidth(width);
         fabricCanvas.setHeight(height);
-        bgContext.drawImage(bgimg,0,0);
+        bgContext.drawImage(bgimg, 0, 0, width, height);
 
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
@@ -693,7 +693,7 @@ function handleMaps(e) {
             sketchCanvas.width = width;
             sketchCanvas.height = height;
         }
-        sketchContext.drawImage(img, 0,0, width, height);
+        sketchContext.drawImage(img, 0, 0, width, height);
         img = sketchCanvas.toDataURL('image/png');
         if (TogetherJS.running) {
             TogetherJS.send({
@@ -717,7 +717,7 @@ function handleFiles(e) {
             sketchCanvas.width = img.width;
             sketchCanvas.height = img.height;
         }
-        sketchContext.drawImage(img, 0,0);
+        sketchContext.drawImage(img, 0, 0);
         img = sketchCanvas.toDataURL('image/png');
         if (TogetherJS.running) {
             TogetherJS.send({
