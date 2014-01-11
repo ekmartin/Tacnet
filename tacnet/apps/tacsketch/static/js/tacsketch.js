@@ -14,6 +14,9 @@ var alpha = 1.0;
 var globalColor;
 var initJSON;
 
+var textColor = '#000000';
+var textCounter = 1;
+
 var icons = {}; 
 var lines = {}; 
 var tempLines = {};
@@ -599,7 +602,7 @@ function addText(text, color, hash, init) {
             type: 'newText',
             hash: hash,
             text: text,
-            fill: sketchContext.strokeStyle
+            fill: color
         });
     }
     dfd.resolve();

@@ -204,7 +204,7 @@ $(document).ready(function () {
     });
 
     $('.addText').click(function() {
-        addText('TEXT', sketchContext.strokeStyle, false, true);
+        addText('Click to edit...', textColor, false, true);
     });
 
     $('.deleteIcon').click(function() {
@@ -362,6 +362,20 @@ $(document).ready(function () {
     });
 
 
+    $('.select-cloud-load').click(function(){
+        // Open Cloud load modal if logged in
+        if (loggedIn != "") {
+            $('#loadCloudTactic').modal('show');
+        }
+        else {
+            $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
+                type: 'danger',
+                width: 'auto'
+            });
+        }
+    });
+
+
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
 
         $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
@@ -452,25 +466,89 @@ $(document).ready(function () {
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
 
-    $('#loadDrawingsInput').change(function (e) {
-        var img = new Image;
-        img.src = URL.createObjectURL(e.target.files[0]);
-        img.onload = function() {
-            if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
-                bgCanvas.width = img.width;
-                bgCanvas.height = img.height;
-                sketchCanvas.width = img.width;
-                sketchCanvas.height = img.height;
-            }
-            sketchContext.drawImage(img, 0, 0);
-            img = sketchCanvas.toDataURL('image/png');
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: 'load',
-                    loadobject: img
-                });
-            }
-        }
+
+
+
+    var genericIcons = $(".generic-icons");
+    genericIcons.mousewheel(function(event, delta) {
+        // Vertical scroll genric icons
+        genericIcons.scrollLeft(genericIcons.scrollLeft() - (delta));
+        event.preventDefault();
     });
-    
-}); 
+
+    $('.number').click(function () {
+        addText(String(textCounter), textColor, false, true);
+        textCounter++;
+    });
+
+    $('.resetNumbers').click(function () {
+        textCounter = 1;
+    });
+
+    $('.generic-green').click(function () {
+        textColor = "#00ff00";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-green');
+    });
+
+    $('.generic-yellow').click(function (){
+        textColor = "#ffff00";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-yellow');
+    });
+
+    $('.generic-red').click(function () {
+        textColor = "#ff0000";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-red');
+    });
+
+    $('.generic-blue').click(function () {
+        textColor = "#0000ff";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-blue');
+    });
+
+    $('.generic-black').click(function () {
+        textColor = "#000000";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-black');
+    });
+
+    $('.generic-white').click(function () {
+        textColor = "#ffffff";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-white');
+    });
+
+
+    var colors = {
+        '#00ff00': 'green',
+        '#ffff00': 'yellow',
+        '#ff0000': 'red',
+        '#0000ff': 'blue',
+        '#000000': 'black',
+        '#ffffff': 'white'
+    };
+
+    $('.circleFilled').click(function(){
+        addIcon('/static/img/fabric/circle_' + colors[textColor] + '.png', false, true);
+    });
+    $('.rectFilled').click(function(){
+        addIcon('/static/img/fabric/rect_' + colors[textColor] + '.png', false, true);
+    });
+    $('.triangleFilled').click(function(){
+        addIcon('/static/img/fabric/triangle_' + colors[textColor] + '.png', false, true);
+    });
+    $('.circle').click(function(){
+        addIcon('/static/img/fabric/circle_stroke_' + colors[textColor] + '.png', false, true);
+    });
+    $('.rect').click(function(){
+        addIcon('/static/img/fabric/rect_stroke_' + colors[textColor] + '.png', false, true);
+    });
+    $('.trinagle').click(function(){
+        addIcon('/static/img/fabric/triangle_stroke_' + colors[textColor] + '.png', false, true);
+    });
+
+});
+
